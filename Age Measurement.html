@@ -1,0 +1,299 @@
+<!DOCTYPE html> 
+<html lang="en" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator | Made By Baher Sallam</title>
+    <link rel="icon" href="Icon.png" type="image/png">
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fade-in 0.5s ease-in-out;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+
+        body.dark-theme {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        body.dark-theme .container {
+            background-color: #495057;
+        }
+
+        body.dark-theme button,
+        body.dark-theme input[type="date"],
+        body.dark-theme select {
+            background-color: #212529;
+            color: #fff;
+        }
+
+        body.dark-theme label,p{
+            color: #fff;
+        }
+
+        p{
+            color: #212529;
+        }
+        .dark-theme p{
+            color: #fff;
+        }
+
+        body.dark-theme .settings-panel label{
+            color: rgb(82, 91, 100);
+        }
+
+        body.dark-theme .settings-panel h3{
+            color: rgb(47, 50, 54);
+        }
+
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+       
+        .settings-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .settings-panel.active {
+            display: flex;
+        }
+
+        .settings-container {
+            text-align: left;
+        }
+
+
+        
+        #settingsButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+
+        #settingsButton:hover {
+            background-color: #0056b3;
+        }
+        img{
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    
+
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-container">
+            <h3>Settings</h3>
+            <label for="language" id="languageLabel">Language:</label>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+            <label for="theme" id="themeLabel">Theme:</label>
+            <select id="theme">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+
+           
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 id="pageTitle">Age Calculator</h1>
+        <label for="dob" id="dobLabel">Enter your date of birth:</label>
+        <input type="date" id="dob">
+        
+        <button onclick="calculateAge()" id="calculateButton">Calculate Age</button>
+        <p id="result"></p>
+        <p id="dayOfBirth"></p> 
+    </div>
+
+    <script>
+        function calculateAge() {
+            var dob = new Date(document.getElementById("dob").value);
+            var now = new Date();
+            var age = now.getFullYear() - dob.getFullYear();
+            var monthDiff = now.getMonth() - dob.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < dob.getDate())) {
+                age--;
+            }
+
+            var language = document.getElementById("language").value;
+            var ageText = "";
+            switch (language) {
+                case "ar":
+                    ageText = "عمرك هو: ";
+                    break;
+                case "fr":
+                    ageText = "Votre âge est de: ";
+                    break;
+                case "de":
+                    ageText = "Dein Alter ist: ";
+                    break;
+                default:
+                    ageText = "Your age is: ";
+            }
+
+            document.getElementById("result").innerHTML = ageText + age;
+            var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var dayOfBirth = daysOfWeek[dob.getDay()]; // dob.getDay() returns the index of the day of the week (0-6)
+            document.getElementById("dayOfBirth").innerHTML = "You were born on a " + dayOfBirth + ".";
+        }
+
+
+
+        function changeLanguage() {
+            var language = document.getElementById("language").value;
+            var htmlTag = document.getElementById("htmlTag");
+            var pageTitle = document.getElementById("pageTitle");
+            var dobLabel = document.getElementById("dobLabel");
+            var languageLabel = document.getElementById("languageLabel");
+            var calculateButton = document.getElementById("calculateButton");
+            var themeLabel = document.getElementById("themeLabel");
+
+            switch (language) {
+                case "ar":
+                    htmlTag.setAttribute("lang", "ar");
+                    pageTitle.textContent = "حاسبة العمر";
+                    dobLabel.textContent = "أدخل تاريخ ميلادك:";
+                    languageLabel.textContent = "اللغة:";
+                    calculateButton.textContent = "احسب العمر";
+                    themeLabel.textContent = "سمة:";
+                    break;
+                case "fr":
+                    htmlTag.setAttribute("lang", "fr");
+                    pageTitle.textContent = "Calculateur d'âge";
+                    dobLabel.textContent = "Entrez votre date de naissance:";
+                    languageLabel.textContent = "Langue:";
+                    calculateButton.textContent = "Calculer l'âge";
+                    themeLabel.textContent = "Thème:";
+                    break;
+                case "de":
+                    htmlTag.setAttribute("lang", "de");
+                    pageTitle.textContent = "Altersrechner";
+                    dobLabel.textContent = "Geben Sie Ihr Geburtsdatum ein:";
+                    languageLabel.textContent = "Sprache:";
+                    calculateButton.textContent = "Alter berechnen";
+                    themeLabel.textContent = "Thema:";
+                    break;
+                default:
+                    htmlTag.setAttribute("lang", "en");
+                    pageTitle.textContent = "Age Calculator";
+                    dobLabel.textContent = "Enter your date of birth:";
+                    languageLabel.textContent = "Language:";
+                    calculateButton.textContent = "Calculate Age";
+                    themeLabel.textContent = "Theme:";
+            }
+        }
+
+        function changeTheme() {
+            var theme = document.getElementById("theme").value;
+            var body = document.body;
+
+            if (theme === "dark") {
+                body.classList.add("dark-theme");
+            } else {
+                body.classList.remove("dark-theme");
+            }
+        }
+
+        document.getElementById("language").addEventListener("change", changeLanguage);
+        document.getElementById("theme").addEventListener("change", changeTheme);
+
+        changeLanguage();
+        changeTheme();
+    </script>
+</body>
+
+</html>
